@@ -1,45 +1,86 @@
 ---
-title: "Your A4 Report Title (TODO: Revise title)"
-author: "Your Name"
-date: '2022-11-01'
+title: "Exposing Gender Disparities in Incarcerated Population in the U.S.: A Data Driven Approach"
+author: "Amber Wu"
+date: '2022-11-21'
 output: html_document
 ---
 
-```{r echo=FALSE, eval=TRUE, message=FALSE}
+```{r echo=FALSE, eval=TRUE, message=FALSE, warning = FALSE}
 source("../source/a4-helpers.R")
 source("../source/analysis.R")
 ```
 
 ## Abstract 
-[TODO: Include a short abstract (about 50 words)]
-
-# Test (TODO: Remove before submission!!)
-```{r echo=FALSE}
-q1_string <- test_query1()
-num <- 5
-```
-As you know, this is a markdown report. The [R Markdown Cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) is **useful!**
-
-* Here's a test of a dynamic variable. Say **"`r q1_string`!!!** 
-* Here's another test. A vector
-of numbers: `r test_query2(num)`.
-
-Recall that _{r echo=TRUE}_ can be used to display the code, 
-which is very useful when developing and debugging a report. Here's an example: 
-
-```{r echo=TRUE}
-num <- 5
-sum <- sum(test_query2(num))
-print(sum)
-```
+In the U.S., it is not news that the existing social and political structures, created since the founding of America, were made to disproportionately imprison people based on race and gender. The present data analysis and visualization report investigate patterns of inequality in mass incarceration in the U.S. by analyzing incarceration data collected by the Vera Institute.
 
 ## Introduction 
-[TODO]
+The United States is the world leader in incarceration. Because of this, the Decarceration Movement has been reforming government policies and implementing decarceration strategies to reduce the number of people held in custody and decrease the rate of incarceration. However, these efforts have left women behind. This report discusses patterns of inequality in mass incarceration, specifically gender disparities in prisons and jails and the increase in female incarceration rates. The women population is a direct stakeholder as the efforts to decarcerate jails and prisons did not equally improve the rate of incarceration for females. The local, state, and federal governments and the criminal justice system are indirect stakeholders as they are the policymakers that directly impact the rate of incarceration. The gender disparity in incarcerated population directly challenges our human value of public safety, public health, and social justice. 
+
+The report answers the following questions:
+
+* What are the trends of total jail population in U.S. from 1970 to 2018?
+*	What are the trends of total jail population of the most populous state from each region of the U.S. between 1970 and 2018?
+*	What are the trends of total female and male jail population in U.S. from 1970 to 2018? Are they similar? If not, how do they differ?
+*	What are the patterns of average percentage change in female and male jail population in U.S. from 2008 to 2018? How does the average percentage change of two populations compare? 
+
 
 ## Data Summary 
-[TODO]
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+get_female_percent_change <- summary_info[1]
+get_male_percent_change <- summary_info[2]
+get_male_percent_change_positive <- male_percent_change_pos
+get_state_highest_female_change <- summary_info[3]
+get_state_highest_female_change_num <- summary_info[4]
+get_state_highest_female_change_num_male <- summary_info[5]
 
-[TODO ... other sections ... See Canvas for details]
+```
+Between 2008 and 2018, the average percentage change in female jail population per year is `r female_percent_change `% and `r male_percent_change`% in male jail population. This means that the female jail population increased by `r female_percent_change`% per year while the male jail population decreased by `r get_male_percent_change_positive`% per year. During this time period, West Virginia (`r get_state_highest_female_change`) held the highest average increase in female jail population of `r get_state_highest_female_change_num` females per year. At the same time, West Virginia had an average increase in male jail population of `r get_state_highest_female_change_num_male` males per year. These values are chosen because they show the clear disparity between male and female incarcerated population. This leads to the question of why did the male jail population decrease while the female jail population increased over the decade?
 
-_All the very best with your work!_
 
+## Growth of the U.S. Prison Population
+```{r echo = FALSE, message = FALSE}
+prison_pop_graph <- plot_jail_pop_for_us() +
+  theme(plot.caption = element_text(hjust = 0)) +
+  labs(caption = "Figure 1. Increase of Jail Population in U.S. (1970-2018). This chart shows the growth of the U.S. jail population from\n1970 to 2018.")
+prison_pop_graph
+  
+```
+
+This graph answers the first question: What are the trends of total jail population from 1970 to 2018? From 1970 to 1979, the total jail population in the U.S. leveled at around 150,000 people. Starting from 1980, the total jail population has drastically increased until 2010. During this increase, the jail population peaked at 778201 people in 2008. Since 2010, the total jail population is seeing an overall decrease. The most recent year the graph shows is 2018, with a jail population of 737126 people.
+
+## Growth of Prison Population by State
+```{r echo = FALSE, message = FALSE}
+prison_pop_state_graph <- plot_prison_pop_by_state() +
+  theme(plot.caption = element_text(hjust = 0)) +
+  labs(caption = "Figure 2. Increase of Jail Population in California, Texas, New York, and Illinois (1970-2018). This chart shows the growth\nof U.S. states California, Texas, New York, and Illinois's jail population from 1970 to 2018.") 
+prison_pop_state_graph
+```
+
+\  
+
+This graph answers the second question: What are the trends of total jail population of the most populous state from each region of the U.S. between 1970 and 2018? From 1980 to 1990, California, Texas, and New York were sharply increasing while Illinois was steadily increasing. Between 1990 and 1994, Texas had a drastic increase in jail population. From 2000 to 2018, California and Texas had a roughly leveled while New York and Illinois steadily leveled off. These states were chosen because I wanted to see if the trend of jail population differs between in different regions of U.S.
+
+## Comparison of Male and Female U.S. Prison Population 
+```{r echo = FALSE, message = FALSE}
+male_female_prison_graph <- plot_jail_gender_growth() +
+  labs(caption = "Figure 3. Increase of Male v.s. Female Jail Population in U.S. (1970-2018). This chart shows the growth of male and \nfemale jail population from 1970 to 2018.") 
+male_female_prison_graph
+```
+\  
+
+This graph answers the third question: What are the trends of total female and male jail population in U.S. from 1970 to 2018? Are they similar? If not, how do they differ? Overall, the trends of male and female population are similar. However, male jail population starts to see a decrease while female jail population levels and continues to increase within the decase. Between 1970 and 1990, both female and male jail population increased. From 1990 to 2008, male jail population showed a drastic increased while female jail population steadily increased. Starting from 2008, male jail population roughly decreased while female jail population leveled. 
+
+## Map: Female Prison Population Rate Continues to Grow
+``` {r echo = FALSE, message = FALSE, warning = FALSE}
+percent_change_in_female_jail_pop_map <- plot_female_percent_change() +
+  labs(caption = "Figure 4. Average Percentage Change in Female Population per Year in Male Jail Population in U.S. (2008-2018). This map shows a visual encoding of \naverage percentage change in female population per year in each state.")
+percent_change_in_female_jail_pop_map
+
+change_in_male_jail_pop_map <- plot_male_percent_change() +
+  labs(caption = "Figure 5. Average Percentage Change in Male Population per Year in Male Jail Population in U.S. (2008-2018). This map shows a visual encoding of \naverage percentage change in male population per year in each state.")
+change_in_male_jail_pop_map
+
+```
+\  
+
+These two maps answer the fourth question: What are the patterns of average percentage change in female and male jail population in U.S. from 2008 to 2018? How does the average percentage change of two populations compare? Overall, the map of female jail population has a redder hue. This means that female jail population has a higher average percentage change in female jail population per year. This is important because the female jail population is seeing a higher increase in population while most male jail population in states is seeing a decrease.
